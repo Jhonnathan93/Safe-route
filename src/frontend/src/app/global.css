@@ -1,0 +1,33 @@
+@import "../styles.css";
+
+.map-loading,
+.app-error {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  color: #315441;
+  font-weight: 600;
+}
+
+.map-select {
+  margin-top: 7px;
+  border: 0;
+  border-radius: 7px;
+  padding: 6px 8px;
+  background: #fff2db;
+  color: #875410;
+  font: 600 12px inherit;
+  cursor: pointer;
+}
+
+.map-help {
+  margin: 8px 0;
+  color: #8a5916;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.primary:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
