@@ -108,6 +108,24 @@ Open:
 - Frontend: <http://localhost:5173>
 - API: <http://localhost:8000/api/>
 
+## Deploy on Vercel
+
+[`src/vercel.json`](src/vercel.json) deploys the React frontend and Django backend together as Vercel Services: `/api/*` is routed to Django and all other requests go to the frontend. Import the repository as one Vercel project and set its Root Directory to `src`.
+
+Set these Production environment variables before deploying:
+
+```env
+DJANGO_SECRET_KEY=<a-long-random-private-value>
+DJANGO_DEBUG=false
+DJANGO_ALLOWED_HOSTS=<your-project>.vercel.app
+GEOCODER_USER_AGENT=safe-route/1.0 (your-email@example.com)
+GEOCODER_TIMEOUT_SECONDS=8
+EAGER_GRAPH_WARM_UP=false
+VITE_API_URL=/api
+```
+
+Do not configure `CORS_ALLOWED_ORIGINS`: both services use the same public origin. For Preview deployments, set `DJANGO_ALLOWED_HOSTS=.vercel.app`.
+
 To stop the application:
 
 ```powershell

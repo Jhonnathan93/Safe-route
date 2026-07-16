@@ -1,4 +1,5 @@
 from django.apps import AppConfig
+from django.conf import settings
 
 
 class RoutingConfig(AppConfig):
@@ -6,7 +7,10 @@ class RoutingConfig(AppConfig):
     name = "routing"
 
     def ready(self) -> None:
-        """Attempt a non-blocking graph warm-up for long-lived processes."""
+        """Optionally warm the graph for long-lived application processes."""
+        if not settings.EAGER_GRAPH_WARM_UP:
+            return
+
         from routing.services.ServiceContainer import initialize_routing_service
 
         initialize_routing_service()

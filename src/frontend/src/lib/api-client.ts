@@ -1,6 +1,8 @@
 import { z } from "zod";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
+const API_URL = import.meta.env.VITE_API_URL || "/api";
+
+const buildApiUrl = (path: string) => new URL(`${API_URL}${path}`, window.location.origin);
 
 export class ApiError extends Error {
   constructor(message: string, public readonly status: number, public readonly details?: unknown) {
@@ -11,7 +13,7 @@ export class ApiError extends Error {
 
 class ApiClient {
   async get<T>(path: string, schema: z.ZodType<T>, query?: Record<string, string>): Promise<T> {
-    const url = new URL(`${API_URL}${path}`);
+    const url = buildApiUrl(path);
     Object.entries(query ?? {}).forEach(([key, value]) => url.searchParams.set(key, value));
     return this.request(url.toString(), { method: "GET" }, schema);
   }

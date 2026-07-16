@@ -86,6 +86,18 @@ Current endpoints are public because they do not modify data. This policy is dec
 | `GEOCODER_USER_AGENT` | — | Required Nominatim identifier |
 | `VITE_API_URL` | `http://localhost:8000/api` | Frontend API URL |
 
+`EAGER_GRAPH_WARM_UP` defaults to `true`. Set it to `false` for Vercel Functions so a cold instance builds the read-only graph only when a graph request arrives.
+
+## Deploy as one Vercel project
+
+The `vercel.json` file in this directory deploys the frontend and Django backend as Vercel Services. The browser reaches the frontend at `/` and the backend at `/api/*` under the same domain.
+
+1. Import the repository as one Vercel project and set its Root Directory to `src`.
+2. Set `VITE_API_URL=/api`, `EAGER_GRAPH_WARM_UP=false`, `DJANGO_DEBUG=false`, a private `DJANGO_SECRET_KEY`, a valid `GEOCODER_USER_AGENT`, and the deployment host in `DJANGO_ALLOWED_HOSTS`.
+3. Do not set `CORS_ALLOWED_ORIGINS`: the frontend and API share the same origin.
+
+The CSV is part of `backend/data`, so it is bundled with the backend service. The first request of a cold Function can take longer because it builds the read-only graph in memory.
+
 ## Tests
 
 The backend uses `pytest` and covers the bidirectional graph, risk metric, and API envelope. Run:

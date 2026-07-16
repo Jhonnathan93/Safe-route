@@ -9,6 +9,7 @@ if not SECRET_KEY:
     raise ImproperlyConfigured("The DJANGO_SECRET_KEY environment variable is required.")
 
 DEBUG = os.getenv("DJANGO_DEBUG", "false").lower() == "true"
+EAGER_GRAPH_WARM_UP = os.getenv("EAGER_GRAPH_WARM_UP", "true").lower() == "true"
 ALLOWED_HOSTS = [host for host in os.getenv("DJANGO_ALLOWED_HOSTS", "").split(",") if host]
 INSTALLED_APPS = [
     "django.contrib.contenttypes", "django.contrib.staticfiles", "corsheaders",
