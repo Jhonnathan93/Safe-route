@@ -12,7 +12,7 @@ DEBUG = os.getenv("DJANGO_DEBUG", "false").lower() == "true"
 ALLOWED_HOSTS = [host for host in os.getenv("DJANGO_ALLOWED_HOSTS", "").split(",") if host]
 INSTALLED_APPS = [
     "django.contrib.contenttypes", "django.contrib.staticfiles", "corsheaders",
-    "rest_framework", "routing",
+    "rest_framework", "routing.apps.RoutingConfig",
 ]
 MIDDLEWARE = ["corsheaders.middleware.CorsMiddleware", "django.middleware.common.CommonMiddleware"]
 ROOT_URLCONF = "safe_route.urls"

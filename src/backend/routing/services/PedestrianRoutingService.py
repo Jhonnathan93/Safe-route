@@ -1,8 +1,10 @@
 """Service that owns the controlled pedestrian-network cache."""
 from __future__ import annotations
 
+from collections.abc import Mapping
 from threading import Lock
 from typing import Any
+from types import MappingProxyType
 
 from routing.utils.DatasetFileManager import DatasetFileManager
 from routing.utils.DatasetValidator import DatasetValidator
@@ -14,7 +16,7 @@ class PedestrianRoutingService:
 
     def __init__(self, dataset_path: str):
         self._dataset_path = dataset_path
-        self._adjacency: dict[Coordinate, tuple[Edge, ...]] | None = None
+        self._adjacency: Mapping[Coordinate, tuple[Edge, ...]] | None = None
         self._lock = Lock()
 
     def get_closest_node(self, point: Coordinate) -> tuple[Coordinate, float]:
@@ -50,17 +52,21 @@ class PedestrianRoutingService:
         with self._lock:
             self._adjacency = new_adjacency
 
-    def _get_adjacency(self) -> dict[Coordinate, tuple[Edge, ...]]:
+    def warm_up(self) -> int:
+        """Builds the read-only graph during application startup and returns its node count."""
+        return len(self._get_adjacency())
+
+    def _get_adjacency(self) -> Mapping[Coordinate, tuple[Edge, ...]]:
         if self._adjacency is None:
             with self._lock:
                 if self._adjacency is None:
                     self._adjacency = self._load_adjacency()
         return self._adjacency
 
-    def _load_adjacency(self) -> dict[Coordinate, tuple[Edge, ...]]:
+    def _load_adjacency(self) -> Mapping[Coordinate, tuple[Edge, ...]]:
         rows = DatasetFileManager.read_rows(self._dataset_path)
         DatasetValidator.validate_or_raise(rows)
-        return GraphCalculator.build_graph(rows)
+        return MappingProxyType(GraphCalculator.build_graph(rows))
 
     @staticmethod
     def _format_node(node: Coordinate, offset_m: float) -> dict[str, float]:

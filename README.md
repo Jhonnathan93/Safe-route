@@ -48,7 +48,7 @@ origin <--> destination
 
 This is intentional. The application is designed for walking, so a street is traversable in both directions even if the original road metadata marks it as one-way for vehicles.
 
-The graph is represented as an adjacency list and cached by the backend service. It preserves parallel segments, validates required CSV columns, and uses Dijkstra's algorithm with a priority queue.
+The graph is represented as an adjacency list, built when Django starts, and retained as a read-only in-memory structure by the backend service. It preserves parallel segments, validates required CSV columns, and uses Dijkstra's algorithm with a priority queue. Gunicorn preloads the graph before creating workers so they inherit the initialized representation without re-reading the CSV per request.
 
 ### Risk and route cost
 

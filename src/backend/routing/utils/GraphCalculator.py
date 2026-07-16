@@ -4,6 +4,7 @@ from __future__ import annotations
 import heapq
 import math
 from collections import defaultdict
+from collections.abc import Mapping
 from dataclasses import dataclass
 from typing import Any
 
@@ -58,7 +59,7 @@ class GraphCalculator:
 
     @staticmethod
     def find_shortest_path(
-        adjacency: dict[Coordinate, tuple[Edge, ...]],
+        adjacency: Mapping[Coordinate, tuple[Edge, ...]],
         origin: Coordinate,
         destination: Coordinate,
         risk_weight: float,

@@ -9,4 +9,4 @@ RUN addgroup --system app && adduser --system --ingroup app app \
     && chown -R app:app /app
 USER app
 EXPOSE 8000
-CMD ["gunicorn", "safe_route.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "2"]
+CMD ["gunicorn", "safe_route.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "2", "--preload"]
