@@ -1,0 +1,25 @@
+services:
+  backend:
+    build: ./backend
+    environment:
+      DATASET_PATH: /data/calles_de_medellin_con_acoso.csv
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:?Configure DJANGO_SECRET_KEY en .env}
+      DJANGO_ALLOWED_HOSTS: localhost,127.0.0.1,backend
+      CORS_ALLOWED_ORIGINS: http://localhost:5173
+      GEOCODER_USER_AGENT: ${GEOCODER_USER_AGENT:?Configure GEOCODER_USER_AGENT en .env}
+      DJANGO_SECURE_SSL_REDIRECT: "false"
+    volumes:
+      - ./data/calles_de_medellin_con_acoso.csv:/data/calles_de_medellin_con_acoso.csv:ro
+    ports:
+      - "8000:8000"
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: http://localhost:8000/api
+    environment:
+      VITE_API_URL: http://localhost:8000/api
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
