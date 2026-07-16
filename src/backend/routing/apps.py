@@ -6,6 +6,7 @@ class RoutingConfig(AppConfig):
     name = "routing"
 
     def ready(self) -> None:
+        """Attempt a non-blocking graph warm-up for long-lived processes."""
         from routing.services.ServiceContainer import initialize_routing_service
 
         initialize_routing_service()

@@ -53,10 +53,15 @@ class PedestrianRoutingService:
             self._adjacency = new_adjacency
 
     def warm_up(self) -> int:
-        """Builds the read-only graph during application startup and returns its node count."""
+        """Build the read-only graph during startup when the runtime allows it.
+
+        Calling this is optional: route requests use the same synchronized lazy
+        initialization path when a serverless instance starts cold.
+        """
         return len(self._get_adjacency())
 
     def _get_adjacency(self) -> Mapping[Coordinate, tuple[Edge, ...]]:
+        """Return the cached graph or initialize it once for this process."""
         if self._adjacency is None:
             with self._lock:
                 if self._adjacency is None:
