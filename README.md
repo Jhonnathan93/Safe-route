@@ -40,7 +40,7 @@ The actively maintained application lives in [`src/`](src/).
 
 ### Pedestrian graph
 
-The street network is loaded from [`src/data/calles_de_medellin_con_acoso.csv`](src/data/calles_de_medellin_con_acoso.csv). Every row becomes two edges:
+The street network is loaded from [`src/backend/data/calles_de_medellin_con_acoso.csv`](src/backend/data/calles_de_medellin_con_acoso.csv). Every row becomes two edges:
 
 ```text
 origin <--> destination

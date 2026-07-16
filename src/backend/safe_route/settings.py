@@ -36,6 +36,6 @@ REST_FRAMEWORK = {
     "UNAUTHENTICATED_USER": None,
     "UNAUTHENTICATED_TOKEN": None,
 }
-DATASET_PATH = os.getenv("DATASET_PATH", str(BASE_DIR.parent / "data/calles_de_medellin_con_acoso.csv"))
+DATASET_PATH = os.getenv("DATASET_PATH", str(BASE_DIR / "data/calles_de_medellin_con_acoso.csv"))
 GEOCODER_USER_AGENT = os.environ["GEOCODER_USER_AGENT"]
 GEOCODER_TIMEOUT_SECONDS = float(os.getenv("GEOCODER_TIMEOUT_SECONDS", "8"))

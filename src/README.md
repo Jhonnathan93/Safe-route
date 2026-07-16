@@ -6,7 +6,8 @@ A web application for finding pedestrian routes in Medellín with lower exposure
 
 - `backend/`: Django + Django REST Framework. It loads the CSV once, creates a **bidirectional** pedestrian graph, and runs Dijkstra's algorithm.
 - `frontend/`: React + TypeScript + Leaflet. It searches places, displays the route, and lets users balance safety and distance.
-- `docker-compose.yml`: runs both services and mounts the street dataset as read-only.
+- `backend/data/`: backend-owned street dataset bundled with the Django service.
+- `docker-compose.yml`: runs both services.
 
 ## Run with Docker
 
@@ -18,7 +19,7 @@ docker compose up --build
 
 Open `http://localhost:5173`. The API is available at `http://localhost:8000/api/`.
 
-The dataset is part of the new project at `data/calles_de_medellin_con_acoso.csv`. Docker Compose mounts it read-only in the backend. When deploying elsewhere, update the volume or set `DATASET_PATH` to the CSV path inside the container.
+The dataset is part of the backend at `backend/data/calles_de_medellin_con_acoso.csv`. The backend image includes it, so Docker Compose and serverless deployments use the same default path. Set `DATASET_PATH` only when you intentionally provide the CSV from another location.
 
 ## Local development
 
@@ -28,7 +29,7 @@ Backend (Python 3.12 recommended):
 cd backend
 python -m venv .venv
 .venv/Scripts/pip install -r requirements.txt
-set DATASET_PATH=../data/calles_de_medellin_con_acoso.csv
+set DATASET_PATH=data/calles_de_medellin_con_acoso.csv
 set DJANGO_SECRET_KEY=a-long-random-secret
 set GEOCODER_USER_AGENT=safe-route-contact@example.com
 .venv/Scripts/python manage.py runserver
@@ -78,7 +79,7 @@ Current endpoints are public because they do not modify data. This policy is dec
 
 | Variable | Default | Purpose |
 | --- | --- | --- |
-| `DATASET_PATH` | `../data/calles_de_medellin_con_acoso.csv` | Street-network CSV |
+| `DATASET_PATH` | `data/calles_de_medellin_con_acoso.csv` | Street-network CSV |
 | `DJANGO_SECRET_KEY` | — | Required Django secret |
 | `DJANGO_ALLOWED_HOSTS` | — | Comma-separated allowed hosts |
 | `DJANGO_SECURE_SSL_REDIRECT` | `true` in production | Forces HTTPS in the production profile |
